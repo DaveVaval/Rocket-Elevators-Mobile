@@ -14,30 +14,12 @@ import {
   Dimensions
   // StatusBar
 } from 'react-native';
+import StartupScreen from './app/screens/StartupScreen';
 
 
 export default function App() {
   console.log("TESTING");
-  
-  const { landscape } = useDeviceOrientation();
-
-  return (
-    <SafeAreaView style={[styles.container, styles.back]}>
-      <StatusBar style='auto'/>
-      <Text>Rocket Elevators</Text>
-      <TouchableHighlight onPress={() => console.log("Pressed")}>
-        <Image fadeDuration={500} source={{ width: 200, height: 200, uri: "https://picsum.photos/200/300"}} />
-      </TouchableHighlight>
-      <Button color="red" title="bruh" 
-        onPress={()=> Alert.alert('Ouain tcé', 'genre', [
-          {text: 'ABUNDA'},
-          {text: 'LA'},
-          {text: 'KAKA'}
-        ])}/>
-
-        <View style={{backgroundColor: '#fff', flex: 0.5}}></View>
-    </SafeAreaView>
-  );
+  return <StartupScreen/>;
 }
  
 const styles = StyleSheet.create({
