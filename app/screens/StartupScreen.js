@@ -1,5 +1,5 @@
 import React from 'react';
-import { ImageBackground, StyleSheet, View, Image } from 'react-native';
+import { ImageBackground, StyleSheet, View, Image, Button } from 'react-native';
 
 function StartupScreen(props) {
     return (
@@ -8,7 +8,7 @@ function StartupScreen(props) {
         source={require('../assets/back.png')}
         >
             <Image style={styles.logo} source={require('../assets/R3.png')}/>
-            <View style={styles.loginButton}></View>
+            <Button title='Login' style={styles.loginButton}/>
         </ImageBackground>
     );
 }
@@ -16,7 +16,7 @@ function StartupScreen(props) {
 const styles = StyleSheet.create({
     background: {
         flex: 1,
-        justifyContent: 'flex-end',
+        justifyContent: 'center',
         alignItems: 'center'
     },
     loginButton: {
@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
         width: 285,
         height: 100,
         position: 'absolute',
-        top: 70
+        top: 100
     }
 })
 
