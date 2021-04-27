@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { 
     ImageBackground, 
     StyleSheet, 
@@ -15,13 +15,15 @@ import Icon from 'react-native-vector-icons/Ionicons'
 
 const {width: WIDTH} = Dimensions.get('window')
 
-function StartupScreen(props) {
+function StartupScreen({navigation}) {
+    const [email, setEmail] = useState('');
     return (
         <ImageBackground 
         style={styles.background}
         source={require('../assets/whiteback.jpg')}
         >
             <Image style={styles.logo} source={require('../assets/R3.png')}/>
+
             <View style={styles.inputContainer}>
                 <Icon name={'ios-person-outline'} size={28} color={'rgba(255,255,255,0.7)'} style={styles.inputIcon} />
                 <TextInput
@@ -29,12 +31,15 @@ function StartupScreen(props) {
                     placeholder='email'
                     placeholderTextColor='rgba(255,255,255,0.7)'
                     underlineColorAndroid='transparent'
+                    onChangeText={email => setEmail(email)}
+                    defaultValue={email}
                 />
+                <Text style={{padding: 5, fontSize: 15}}>
+                    {email}
+                </Text>
             </View>
 
-            {/* <Button title='Login' onPress={() => Alert.alert('login')} style={styles.loginButton}/> */}
-
-            <TouchableOpacity style={styles.loginButton}>
+            <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('Home')}>
                 <Text style={styles.loginText}>login</Text>
             </TouchableOpacity>
 
@@ -65,7 +70,7 @@ const styles = StyleSheet.create({
         width: 285,
         height: 100,
         position: 'absolute',
-        top: 100
+        top: 120
     },
     input: {
         width: WIDTH - 55,

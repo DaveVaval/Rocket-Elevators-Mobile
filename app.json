@@ -3,7 +3,7 @@
     "name": "RocketElevators",
     "slug": "RocketElevators",
     "version": "1.0.0",
-    "orientation": "portait",
+    "orientation": "default",
     "icon": "./app/assets/icon.png",
     "splash": {
       "image": "./app/assets/splash.png",
