@@ -11,28 +11,17 @@ import {
     TouchableOpacity,
     Text
 } from 'react-native';
-import ElevatorStatusScreen from './ElevatorStatusScreen';
 
 // const height = Dimensions
 
-const bottomTabNavigator = createBottomTabNavigator(
-    {
-      Home: HomeScreen,
-      Elevator: ElevatorStatusScreen,
-    },
-    {
-      initialRouteName: 'Home'
-    }
-);
-
-function HomeScreen({navigation, route}) {
+function ElevatorStatusScreen({navigation, route}) {
     console.log('hello')
     return (
         <ImageBackground 
         style={styles.background}
         source={require('../assets/whiteback.jpg')}
         >
-            <Text>Home</Text>
+            <Text>Elevator Status</Text>
             <View style={styles.navbar}>
                 <Image source={require('../assets/whiteback.jpg')}>
                     
@@ -42,7 +31,7 @@ function HomeScreen({navigation, route}) {
     );
 }
 
-export default HomeScreen;
+export default ElevatorStatusScreen;
 
 const styles = StyleSheet.create({
     background: {

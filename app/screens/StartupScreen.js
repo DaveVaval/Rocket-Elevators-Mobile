@@ -12,11 +12,17 @@ import {
     Text
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons'
+import { AuthContext } from '../components/context';
 
 const {width: WIDTH} = Dimensions.get('window')
 
+
 function StartupScreen({navigation}) {
+
     const [email, setEmail] = useState('');
+
+    const { login } = React.useContext(AuthContext);
+
     return (
         <ImageBackground 
         style={styles.background}
@@ -34,12 +40,20 @@ function StartupScreen({navigation}) {
                     onChangeText={email => setEmail(email)}
                     defaultValue={email}
                 />
-                <Text style={{padding: 5, fontSize: 15}}>
-                    {email}
-                </Text>
             </View>
 
-            <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('Home')}>
+            <TouchableOpacity style={styles.loginButton} onPress={() => {
+                return fetch(`http://daverocketrestapi.azurewebsites.net/api/Mobile/${email}`)
+                    .then((response) => {
+                        if (response.status == 200){
+                            login()
+                        }
+                        else{
+                            console.log('Invalid email');
+                            Alert.alert('Not found');
+                        }
+                    })
+            }}>
                 <Text style={styles.loginText}>login</Text>
             </TouchableOpacity>
 
