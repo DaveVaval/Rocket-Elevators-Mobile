@@ -35,11 +35,17 @@ export default function App() {
   const authContext = React.useMemo(() => ({
     login: () => {
       setUserToken('bruh');
-      setIsLoading(false);
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     },
     logout: () => {
       setUserToken(null);
-      setIsLoading(false);
+      setIsLoading(true);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
   }));
 
@@ -62,7 +68,10 @@ export default function App() {
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
         {userToken != null ? (
-          <HomeScreen/>
+          <Stack.Navigator>
+            <Stack.Screen name='Home' component={HomeScreen}/>
+            <Stack.Screen name='Elevators' component={ElevatorStatusScreen}/>
+          </Stack.Navigator>
         )
       :
         <StartupScreen/>
