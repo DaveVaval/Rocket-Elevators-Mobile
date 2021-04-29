@@ -15,7 +15,7 @@ import {
 
 function ElevatorStatusScreen({navigation, route}) {
     const { Elevator } = route.params;
-    console.log("Elevator Screen: ")
+    console.log("Elevator Screen: ", Elevator.id)
     
     return (
         <ImageBackground 

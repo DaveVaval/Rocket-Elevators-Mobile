@@ -28,16 +28,12 @@ const Stack = createStackNavigator();
 
 export default function App() {
 
-  // const [isLoading, setIsLoading] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [userToken, setUserToken] = React.useState(null);
 
   const authContext = React.useMemo(() => ({
     login: () => {
       setUserToken('bruh');
-      // setIsLoading(true);
-      // setTimeout(() => {
-      //   setIsLoading(false);
-      // }, 1000);
     },
     logout: () => {
       setUserToken(null);
@@ -54,19 +50,19 @@ export default function App() {
     }
   }));
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, 1000);
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
-  // if(isLoading){
-  //   return(
-  //     <View style={[styles.loading, styles.loadingHori]}>
-  //         <ActivityIndicator size='large' color='#0466c8'/>
-  //     </View>
-  //   );
-  // }
+  if(isLoading){
+    return(
+      <View style={[styles.loading, styles.loadingHori]}>
+          <ActivityIndicator size='large' color='#0466c8'/>
+      </View>
+    );
+  }
 
   
   return (

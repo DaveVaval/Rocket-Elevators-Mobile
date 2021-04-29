@@ -23,6 +23,7 @@ const {width: WIDTH} = Dimensions.get('window')
 function HomeScreen({navigation, route}) {
     const [elevatorList, setElevators] = React.useState([]);
     const [loading, isLoading] = React.useState(true);
+    const { logout } = React.useContext(AuthContext);
     
     useEffect(() => {
         console.log('Home Screen')
@@ -39,16 +40,10 @@ function HomeScreen({navigation, route}) {
                     }
                     isLoading(false);
                     setElevators(f => [...f, elevator]);
-                    // elevatorList.push(elevator)
-                    
                 });
             })
     },[]);
 
-    
-
-    const { logout } = React.useContext(AuthContext);
-    
     if(loading){
         return(
           <View style={[styles.loading, styles.loadingHori]}>
@@ -71,7 +66,7 @@ function HomeScreen({navigation, route}) {
                         Alert.alert("Elevator: ", JSON.stringify(item));
                         console.log(item)
                         // setData(item)
-                        navigation.navigate('Elevator Status', {Elevator: "test"})
+                        navigation.navigate('Elevator Status', {Elevator: item})
                         }}>
                         <Text>Elevator: {item.id}</Text>
                     </TouchableOpacity>
