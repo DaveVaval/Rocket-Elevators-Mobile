@@ -27,18 +27,17 @@ const Stack = createStackNavigator();
 
 
 export default function App() {
-  console.log("TESTING");
 
-  const [isLoading, setIsLoading] = React.useState(true);
+  // const [isLoading, setIsLoading] = React.useState(false);
   const [userToken, setUserToken] = React.useState(null);
 
   const authContext = React.useMemo(() => ({
     login: () => {
       setUserToken('bruh');
-      setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
+      // setIsLoading(true);
+      // setTimeout(() => {
+      //   setIsLoading(false);
+      // }, 1000);
     },
     logout: () => {
       setUserToken(null);
@@ -46,28 +45,34 @@ export default function App() {
       setTimeout(() => {
         setIsLoading(false);
       }, 1000);
+    },
+    refresh: (bruh) => {
+      setIsLoading(bruh);
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
   }));
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 1000);
+  // }, []);
 
-  if(isLoading){
-    return(
-      <View style={[styles.loading, styles.loadingHori]}>
-          <ActivityIndicator size='large' color='#0466c8'/>
-      </View>
-    );
-  }
+  // if(isLoading){
+  //   return(
+  //     <View style={[styles.loading, styles.loadingHori]}>
+  //         <ActivityIndicator size='large' color='#0466c8'/>
+  //     </View>
+  //   );
+  // }
 
   
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {userToken != null ? (
+        {userToken === 'bruh' ? (
           <Stack.Navigator>
             <Stack.Screen name='Home' component={HomeScreen}/>
             <Stack.Screen name='Elevator Status' component={ElevatorStatusScreen}/>

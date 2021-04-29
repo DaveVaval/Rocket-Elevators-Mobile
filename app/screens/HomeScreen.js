@@ -12,41 +12,53 @@ import {
     Alert,
     TouchableOpacity,
     Text,
-    FlatList
+    FlatList,
+    ActivityIndicator
 } from 'react-native';
 import { AuthContext } from '../components/context';
+const axios = require('axios').default;
 
 const {width: WIDTH} = Dimensions.get('window')
-
+   
 function HomeScreen({navigation, route}) {
-    console.log('Home Screen')
-    const { logout } = React.useContext(AuthContext);
-
     const [elevatorList, setElevators] = React.useState([]);
-
+    const [loading, isLoading] = React.useState(true);
+    
     useEffect(() => {
-        console.log('Api call!')
-        fetch('http://daverocketrestapi.azurewebsites.net/api/Elevators/status/Stopped')
-                .then(result => result.json())
-                    .then((response) => {
-                        console.log('Got the response!');
-                        for(let i = 0; i < response.length; i++){
-                            const elevator = {
-                                id: response[i].id,
-                                type: response[i].elevatorType,
-                                model: response[i].model,
-                                status: response[i].status,
-                                serial: response[i].serialNumber
-                            }
-                            setElevators(f => [...f, elevator]);
-                        }
-                        console.log('Elevator List is full!');
-                        console.log('Elevator 1: ', elevatorList[0]);
-                    })    
-    }, []);
+        console.log('Home Screen')
+        axios.get('http://daverocketrestapi.azurewebsites.net/api/Elevators/status/Stopped')
+            .then(response => {
+                console.log('Response!')
+                response.data.forEach(e => {
+                    const elevator = {
+                        id: e.id,
+                        type: e.elevatorType,
+                        model: e.model,
+                        status: e.status,
+                        serial: e.serialNumber
+                    }
+                    isLoading(false);
+                    setElevators(f => [...f, elevator]);
+                    // elevatorList.push(elevator)
+                    
+                });
+            })
+    },[]);
 
+    
+
+    const { logout } = React.useContext(AuthContext);
+    
+    if(loading){
+        return(
+          <View style={[styles.loading, styles.loadingHori]}>
+              <ActivityIndicator size='large' color='#0466c8'/>
+          </View>
+        );
+    }
 
     return (
+        
         <ImageBackground 
         style={styles.background}
         source={require('../assets/whiteback.jpg')}
@@ -57,29 +69,14 @@ function HomeScreen({navigation, route}) {
                 renderItem={({item}) =>(
                     <TouchableOpacity style={styles.item} onPress={() => {
                         Alert.alert("Elevator: ", JSON.stringify(item));
-                        navigation.navigate('Elevator Status')
+                        console.log(item)
+                        // setData(item)
+                        navigation.navigate('Elevator Status', {Elevator: "test"})
                         }}>
                         <Text>Elevator: {item.id}</Text>
                     </TouchableOpacity>
                 )}
             />
-
-            {/* {elevatorList != null ? (
-                <FlatList
-                    keyExtractor={(item) => item.id}
-                    data={elevatorList}
-                    renderItem={({item}) =>(
-                        <TouchableOpacity style={styles.item}>
-                            <Text>Elevator: {item.id}</Text>
-                        </TouchableOpacity>
-                    )}
-                />
-            )
-            :
-                <Text>lel</Text>
-            } */}
-
-            <Button title='Go to elevators' onPress={() => navigation.navigate('Elevator Status')}/>
 
             <TouchableOpacity style={styles.logoutButton} onPress={() =>{logout()}}>
                 <Text style={styles.logoutText}>LOGOUT</Text>
@@ -88,7 +85,6 @@ function HomeScreen({navigation, route}) {
     );
 }
 
-export default HomeScreen;
 
 const styles = StyleSheet.create({
     background: {
@@ -104,9 +100,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     logoutText: {
-       color: 'rgba(255,255,255,0.7)',
-       fontSize: 16,
-       textAlign: 'center',
+        color: 'rgba(255,255,255,0.7)',
+        fontSize: 16,
+        textAlign: 'center',
     },
     item: {
         width: WIDTH - 55,
@@ -120,5 +116,15 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         
+    },
+    loading: {
+        flex: 1,
+        justifyContent: "center"
+    },
+    loadingHori: {
+        flexDirection: "row",
+        justifyContent: "space-around",
+        padding: 10
     }
 });
+export default HomeScreen;

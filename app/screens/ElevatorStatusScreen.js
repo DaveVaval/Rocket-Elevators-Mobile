@@ -12,16 +12,18 @@ import {
     Text
 } from 'react-native';
 
-// const height = Dimensions
 
 function ElevatorStatusScreen({navigation, route}) {
-    console.log('hello')
+    const { Elevator } = route.params;
+    console.log("Elevator Screen: ")
+    
     return (
         <ImageBackground 
         style={styles.background}
         source={require('../assets/whiteback.jpg')}
         >
-            <Text>Elevator Status</Text>
+            <Text>Elevator</Text>
+
             <View style={styles.navbar}>
                 <Image source={require('../assets/whiteback.jpg')}>
                     
@@ -31,7 +33,6 @@ function ElevatorStatusScreen({navigation, route}) {
     );
 }
 
-export default ElevatorStatusScreen;
 
 const styles = StyleSheet.create({
     background: {
@@ -46,3 +47,4 @@ const styles = StyleSheet.create({
         top: 350
     }
 });
+export default ElevatorStatusScreen;

@@ -49,7 +49,6 @@ function StartupScreen({navigation}) {
                             login()
                         }
                         else{
-                            console.log('Invalid email');
                             Alert.alert('Not found');
                         }
                     })
