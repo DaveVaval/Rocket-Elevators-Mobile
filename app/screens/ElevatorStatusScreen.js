@@ -22,7 +22,7 @@ function ElevatorStatusScreen({navigation, route}) {
         style={styles.background}
         source={require('../assets/whiteback.jpg')}
         >
-            <Text>Elevator</Text>
+            <Text>Elevator {Elevator.id}</Text>
 
             <View style={styles.navbar}>
                 <Image source={require('../assets/whiteback.jpg')}>
