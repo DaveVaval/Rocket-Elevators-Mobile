@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-// import { createStackNavigator } from '@react-navigation/stack';
 import Icon from 'react-native-vector-icons/Ionicons'
 import { 
     ImageBackground, 
@@ -15,63 +14,72 @@ import {
     Text,
     FlatList
 } from 'react-native';
-import ElevatorStatusScreen from './ElevatorStatusScreen';
 import { AuthContext } from '../components/context';
 
 const {width: WIDTH} = Dimensions.get('window')
 
-const Tab = createBottomTabNavigator();
-// const Stack = createStackNavigator();
-
-const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-];
-
-const Item = ({ title }) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{title}</Text>
-    </View>
-);
-
 function HomeScreen({navigation, route}) {
-    console.log('hello')
+    console.log('Home Screen')
     const { logout } = React.useContext(AuthContext);
 
-    const renderItem = ({ item }) => (
-        <Item title={item.title} />
-    );
+    const [elevatorList, setElevators] = React.useState([]);
+
+    useEffect(() => {
+        console.log('Api call!')
+        fetch('http://daverocketrestapi.azurewebsites.net/api/Elevators/status/Stopped')
+                .then(result => result.json())
+                    .then((response) => {
+                        console.log('Got the response!');
+                        for(let i = 0; i < response.length; i++){
+                            const elevator = {
+                                id: response[i].id,
+                                type: response[i].elevatorType,
+                                model: response[i].model,
+                                status: response[i].status,
+                                serial: response[i].serialNumber
+                            }
+                            setElevators(f => [...f, elevator]);
+                        }
+                        console.log('Elevator List is full!');
+                        console.log('Elevator 1: ', elevatorList[0]);
+                    })    
+    }, []);
+
 
     return (
-        // <Stack.Navigator>
-        //         <Stack.Screen name='Home'/>
-        //         <Stack.Screen name='Elevators' component={ElevatorStatusScreen}/>
-        // </Stack.Navigator>
         <ImageBackground 
         style={styles.background}
         source={require('../assets/whiteback.jpg')}
         >
-            
-            <Text>HomeScreen</Text>
-            <View style={styles.listContainer}>
-                <FlatList
-                    data={DATA}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.id}
-                />
-            </View>
+            <FlatList
+                keyExtractor={(item) => item.id}
+                data={elevatorList}
+                renderItem={({item}) =>(
+                    <TouchableOpacity style={styles.item} onPress={() => {
+                        Alert.alert("Elevator: ", JSON.stringify(item));
+                        navigation.navigate('Elevator Status')
+                        }}>
+                        <Text>Elevator: {item.id}</Text>
+                    </TouchableOpacity>
+                )}
+            />
 
-            <Button title='Go to elevators' onPress={() => navigation.navigate('Elevators')}/>
+            {/* {elevatorList != null ? (
+                <FlatList
+                    keyExtractor={(item) => item.id}
+                    data={elevatorList}
+                    renderItem={({item}) =>(
+                        <TouchableOpacity style={styles.item}>
+                            <Text>Elevator: {item.id}</Text>
+                        </TouchableOpacity>
+                    )}
+                />
+            )
+            :
+                <Text>lel</Text>
+            } */}
+
+            <Button title='Go to elevators' onPress={() => navigation.navigate('Elevator Status')}/>
 
             <TouchableOpacity style={styles.logoutButton} onPress={() =>{logout()}}>
                 <Text style={styles.logoutText}>LOGOUT</Text>
@@ -101,6 +109,7 @@ const styles = StyleSheet.create({
        textAlign: 'center',
     },
     item: {
+        width: WIDTH - 55,
         backgroundColor: '#f9c2ff',
         padding: 20,
         marginVertical: 8,

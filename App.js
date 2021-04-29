@@ -70,7 +70,7 @@ export default function App() {
         {userToken != null ? (
           <Stack.Navigator>
             <Stack.Screen name='Home' component={HomeScreen}/>
-            <Stack.Screen name='Elevators' component={ElevatorStatusScreen}/>
+            <Stack.Screen name='Elevator Status' component={ElevatorStatusScreen}/>
           </Stack.Navigator>
         )
       :
