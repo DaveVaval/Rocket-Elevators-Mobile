@@ -40,7 +40,7 @@ function StartupScreen({navigation}) {
                     defaultValue={email}
                 />
             </View>
-
+            {/* Call to the api to check if the user is an employee */}
             <TouchableOpacity style={styles.loginButton} onPress={() => {
                 return fetch(`http://daverocketrestapi.azurewebsites.net/api/Mobile/${email}`)
                     .then((response) => {
@@ -48,7 +48,7 @@ function StartupScreen({navigation}) {
                             login()
                         }
                         else{
-                            Alert.alert('Not found');
+                            Alert.alert('Not found!');
                         }
                     })
             }}>

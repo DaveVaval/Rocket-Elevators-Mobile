@@ -25,7 +25,7 @@ function HomeScreen({navigation, route}) {
             isLoading(true)
         });
     },[])
-
+    // Call to the api to get the list of elevators
     if(loading){
         axios.get('http://daverocketrestapi.azurewebsites.net/api/Elevators/status/Stopped')
             .then(response => {

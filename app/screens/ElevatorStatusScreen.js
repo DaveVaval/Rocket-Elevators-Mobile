@@ -15,12 +15,12 @@ function ElevatorStatusScreen({navigation, route}) {
     const { Elevator } = route.params;
     const [elevatorStatus, setEleStatus] = React.useState(Elevator.status);
     const [statusColor, setColorStatus] = React.useState('red');
-
+    // Call to the api to update the status of an elevator
     const endtask = () => {
         axios.get(`http://daverocketrestapi.azurewebsites.net/api/Elevators/update/Operational/${Elevator.id}`)
         .then(response => {
             if(response.status == 200){
-                Alert.alert('Status has been changed to Operatinal!')
+                Alert.alert('Status has been changed to Operational!')
                 setColorStatus('green')
                 setEleStatus('Operational');
             }
