@@ -4,7 +4,6 @@ import {
     StyleSheet, 
     View, 
     Image, 
-    Button, 
     TextInput, 
     Dimensions, 
     Alert,

@@ -1,35 +1,35 @@
 import React, { useEffect } from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Icon from 'react-native-vector-icons/Ionicons'
 import { 
     ImageBackground, 
     StyleSheet, 
-    View, 
-    Image, 
-    Button, 
-    TextInput, 
-    Dimensions, 
-    Alert,
+    View,
+    Dimensions,
     TouchableOpacity,
     Text,
     FlatList,
     ActivityIndicator
 } from 'react-native';
 import { AuthContext } from '../components/context';
+
 const axios = require('axios').default;
 
 const {width: WIDTH} = Dimensions.get('window')
-   
+
 function HomeScreen({navigation, route}) {
     const [elevatorList, setElevators] = React.useState([]);
-    const [loading, isLoading] = React.useState(true);
+    const [loading, isLoading] = React.useState();
     const { logout } = React.useContext(AuthContext);
-    
+
     useEffect(() => {
-        console.log('Home Screen')
+        navigation.addListener('focus', () => {
+            isLoading(true)
+        });
+    },[])
+
+    if(loading){
         axios.get('http://daverocketrestapi.azurewebsites.net/api/Elevators/status/Stopped')
             .then(response => {
-                console.log('Response!')
+                setElevators([])
                 response.data.forEach(e => {
                     const elevator = {
                         id: e.id,
@@ -42,9 +42,6 @@ function HomeScreen({navigation, route}) {
                     setElevators(f => [...f, elevator]);
                 });
             })
-    },[]);
-
-    if(loading){
         return(
           <View style={[styles.loading, styles.loadingHori]}>
               <ActivityIndicator size='large' color='#0466c8'/>
@@ -53,19 +50,15 @@ function HomeScreen({navigation, route}) {
     }
 
     return (
-        
         <ImageBackground 
         style={styles.background}
         source={require('../assets/whiteback.jpg')}
         >
             <FlatList
-                keyExtractor={(item) => item.id}
+                keyExtractor={(item) => item.id.toString()}
                 data={elevatorList}
                 renderItem={({item}) =>(
                     <TouchableOpacity style={styles.item} onPress={() => {
-                        Alert.alert("Elevator: ", JSON.stringify(item));
-                        console.log(item)
-                        // setData(item)
                         navigation.navigate('Elevator Status', {Elevator: item})
                         }}>
                         <Text>Elevator: {item.id}</Text>
@@ -101,16 +94,14 @@ const styles = StyleSheet.create({
     },
     item: {
         width: WIDTH - 55,
-        backgroundColor: '#f9c2ff',
+        backgroundColor: '#2e6f95',
         padding: 20,
+        borderRadius: 10,
         marginVertical: 8,
         marginHorizontal: 16,
     },
     title: {
         fontSize: 32,
-    },
-    listContainer: {
-        
     },
     loading: {
         flex: 1,

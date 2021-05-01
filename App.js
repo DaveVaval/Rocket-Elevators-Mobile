@@ -1,20 +1,11 @@
 import 'react-native-gesture-handler';
-import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { useDimensions, useDeviceOrientation } from '@react-native-community/hooks';
 import { 
   StyleSheet, 
-  Text, 
   View, 
-  TouchableHighlight,
   Image, 
-  SafeAreaView, 
-  Button,
-  Alert,
-  Platform,
-  Dimensions,
   ActivityIndicator
 } from 'react-native';
 
@@ -33,17 +24,11 @@ export default function App() {
 
   const authContext = React.useMemo(() => ({
     login: () => {
-      setUserToken('bruh');
+      setUserToken('loggedin');
     },
     logout: () => {
       setUserToken(null);
       setIsLoading(true);
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
-    },
-    refresh: (bruh) => {
-      setIsLoading(bruh);
       setTimeout(() => {
         setIsLoading(false);
       }, 1000);
@@ -64,13 +49,20 @@ export default function App() {
     );
   }
 
-  
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>
-        {userToken === 'bruh' ? (
+        {userToken != null ? (
           <Stack.Navigator>
-            <Stack.Screen name='Home' component={HomeScreen}/>
+            <Stack.Screen 
+            name='Home' 
+            component={HomeScreen}
+            options={{
+              title: <Image style={{ width: 100, height: 56}}
+              source={require('./app/assets/REfavicon.png')}
+              resizeMode='stretch'/>
+            }}
+            />
             <Stack.Screen name='Elevator Status' component={ElevatorStatusScreen}/>
           </Stack.Navigator>
         )
@@ -88,7 +80,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    // paddingTop: Platform.OS === 'android' ? StatusBar.height : 0
   },
   back: {
     backgroundColor: 'orange'
